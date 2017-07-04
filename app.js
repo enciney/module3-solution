@@ -29,7 +29,7 @@ function FoundItemsDirectiveController() {
   var founds = this;
   console.log(founds.found);
   founds.isDataComing = function() {
-    if(founds.found.length === 0)
+    if(founds.found.length == 0)
       return false
     return true ;
   }
@@ -41,6 +41,7 @@ function NarrowItDownController(MenuSearchService) {
   var narrow = this ;
 
   narrow.found = [];
+
 
 narrow.titles = {
     // no : "NO",
@@ -61,6 +62,11 @@ narrow.removeMenuItem = function (index) {
    var promise =MenuSearchService.getMatchedMenuItems(searchValue);
    promise.then(function(items){
      narrow.found = items;
+     if(narrow.found.length > 0 ){
+        narrow.searched = false ;}
+     else {
+        narrow.searched = true ;
+     }
        console.log(narrow.found);
    }).catch(function (error) {
     console.log("Something went terribly wrong.");
@@ -103,6 +109,10 @@ function MenuSearchService($http) {
 
     function getMatchedData(searchValue,result) {
       var returnItems = [];
+      if(!searchValue){
+        
+        return  returnItems ;
+      }
       var items  =  result.data.menu_items;
 
       for (var i = 0; i < items.length; i++) {
